@@ -912,44 +912,47 @@ namespace osu.Framework.Platform
 
             Logger.Log($"🖼️ Renderer fallback order: [ {string.Join(", ", rendererTypes.Select(e => e.GetDescription()))} ]");
 
-            foreach (RendererType type in rendererTypes)
-            {
-                try
-                {
-                    switch (type)
-                    {
-                        case RendererType.OpenGL:
-                            // Use the legacy GL renderer. This is basically guaranteed to support all platforms
-                            // and performs better than the Veldrid-GL renderer due to reduction in allocs.
-                            SetupRendererAndWindow(new GLRenderer(), GraphicsSurfaceType.OpenGL);
-                            break;
+            // always openGL for now.
+            SetupRendererAndWindow(new GLRenderer(), GraphicsSurfaceType.OpenGL);
 
-                        case RendererType.Deferred_Metal:
-                        case RendererType.Deferred_Vulkan:
-                        case RendererType.Deferred_Direct3D11:
-                        case RendererType.Deferred_OpenGL:
-                            SetupRendererAndWindow(new DeferredRenderer(), rendererToGraphicsSurfaceType(type));
-                            break;
-
-                        default:
-                            SetupRendererAndWindow(new VeldridRenderer(), rendererToGraphicsSurfaceType(type));
-                            break;
-                    }
-
-                    ResolvedRenderer = type;
-                    return;
-                }
-                catch
-                {
-                    if (configRenderer.Value != RendererType.Automatic)
-                    {
-                        // If we fail, assume the user may have had a custom setting and switch it back to automatic.
-                        Logger.Log($"The selected renderer ({configRenderer.Value.GetDescription()}) failed to initialise. Renderer selection has been reverted to automatic.",
-                            level: LogLevel.Important);
-                        configRenderer.Value = RendererType.Automatic;
-                    }
-                }
-            }
+            // foreach (RendererType type in rendererTypes)
+            // {
+            //     try
+            //     {
+            //         switch (type)
+            //         {
+            //             case RendererType.OpenGL:
+            //                 // Use the legacy GL renderer. This is basically guaranteed to support all platforms
+            //                 // and performs better than the Veldrid-GL renderer due to reduction in allocs.
+            //                 SetupRendererAndWindow(new GLRenderer(), GraphicsSurfaceType.OpenGL);
+            //                 break;
+            //
+            //             case RendererType.Deferred_Metal:
+            //             case RendererType.Deferred_Vulkan:
+            //             case RendererType.Deferred_Direct3D11:
+            //             case RendererType.Deferred_OpenGL:
+            //                 SetupRendererAndWindow(new DeferredRenderer(), rendererToGraphicsSurfaceType(type));
+            //                 break;
+            //
+            //             default:
+            //                 SetupRendererAndWindow(new VeldridRenderer(), rendererToGraphicsSurfaceType(type));
+            //                 break;
+            //         }
+            //
+            //         ResolvedRenderer = type;
+            //         return;
+            //     }
+            //     catch
+            //     {
+            //         if (configRenderer.Value != RendererType.Automatic)
+            //         {
+            //             // If we fail, assume the user may have had a custom setting and switch it back to automatic.
+            //             Logger.Log($"The selected renderer ({configRenderer.Value.GetDescription()}) failed to initialise. Renderer selection has been reverted to automatic.",
+            //                 level: LogLevel.Important);
+            //             configRenderer.Value = RendererType.Automatic;
+            //         }
+            //     }
+            // }
 
             Logger.Log("No usable renderer was found!", level: LogLevel.Error);
         }
