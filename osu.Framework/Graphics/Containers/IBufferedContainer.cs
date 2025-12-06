@@ -10,5 +10,7 @@ namespace osu.Framework.Graphics.Containers
     public interface IBufferedContainer : IContainer
     {
         Vector2 BlurSigma { get; set; }
+
+        float GrayscaleStrength { get; set; }
     }
 }
