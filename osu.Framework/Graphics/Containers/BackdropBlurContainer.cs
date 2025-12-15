@@ -61,6 +61,8 @@ namespace osu.Framework.Graphics.Containers
 
         private readonly BackdropBlurDrawNodeSharedData sharedData;
 
+        public float GrayscaleStrength { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public BackdropBlurContainer(RenderBufferFormat[] formats = null)
         {
             sharedData = new BackdropBlurDrawNodeSharedData(formats);
